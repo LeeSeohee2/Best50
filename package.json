@@ -1,0 +1,12 @@
+{
+  "name": "your-project-name",
+  "version": "1.0.0",
+  "description": "Project description",
+  "main": "script.js",
+  "scripts": {
+    "fetch-images": "node fetch-images.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}
