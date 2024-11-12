@@ -1,6 +1,7 @@
 // =============================
 // 슬라이더 기능 구현
 // =============================
+
 const slides = document.querySelectorAll('.slide');
 let currentSlide = 0;
 const slideInterval = setInterval(nextSlide, 5000); // 5초마다 슬라이드 전환
