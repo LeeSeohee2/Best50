@@ -13,6 +13,7 @@ let slides = [];
 
 // Netlify Functions의 프록시된 API 호출 및 캐싱
 async function fetchImages(query) {
+    console.log('Fetching images with query:', query);
     const cachedData = localStorage.getItem('cachedImages');
     const cacheTimestamp = localStorage.getItem('cacheTimestamp');
     const now = Date.now();
@@ -22,12 +23,13 @@ async function fetchImages(query) {
 
     if (cachedData && cacheTimestamp && (now - cacheTimestamp < oneDay)) {
         // 캐시된 데이터가 있고, 하루가 지나지 않았다면 캐시 사용
-        console.log('캐시된 이미지를 사용합니다.');
+        console.log('Using cached images.');
         return JSON.parse(cachedData);
     } else {
         try {
-            // 새로운 데이터를 가져와서 캐시에 저장
-            const response = await fetch(`/.netlify/functions/fetchImages?q=안경&per_page=5`);
+            const url = `/.netlify/functions/fetchImages?q=${encodeURIComponent(query)}&per_page=5`;
+            console.log('Fetching from URL:', url);
+            const response = await fetch(url);
             if (!response.ok) throw new Error("Failed to fetch images");
             const data = await response.json();
             const images = data.hits;
@@ -36,10 +38,10 @@ async function fetchImages(query) {
             localStorage.setItem('cachedImages', JSON.stringify(images));
             localStorage.setItem('cacheTimestamp', now.toString());
 
-            console.log('새로운 이미지를 가져와 캐시에 저장했습니다.');
+            console.log('Fetched new images and cached them.');
             return images;
         } catch (error) {
-            console.error('이미지 가져오기 실패:', error);
+            console.error('Failed to fetch images:', error);
             return [];
         }
     }
@@ -47,12 +49,17 @@ async function fetchImages(query) {
 
 // 슬라이드 생성 함수
 function createSlide(imageUrl, altText) {
+    if (!imageUrl) {
+        console.warn('Image URL is undefined.');
+        return null;
+    }
+
     const slide = document.createElement('div');
     slide.classList.add('slide');
 
     const img = document.createElement('img');
     img.src = imageUrl;
-    img.alt = altText;
+    img.alt = altText || '슬라이드 이미지';
     img.loading = 'lazy';
 
     slide.appendChild(img);
@@ -61,25 +68,45 @@ function createSlide(imageUrl, altText) {
 
 // 슬라이더 초기화 함수
 async function initSlider() {
+    console.log('Initializing slider...');
     const images = await fetchImages('안경');
 
+    console.log('Fetched images:', images);
+
     if (images.length === 0) {
-        slidesContainer.innerHTML = '<p>이미지를 로드할 수 없습니다.</p>';
+        slidesContainer.innerHTML = '<p>Unable to load images.</p>';
         return;
     }
 
     // 슬라이드 동적 생성 및 추가
     images.forEach((image, index) => {
-        const slide = createSlide(image.url, image.alt || '슬라이드 이미지');
-        if (index === 0) {
-            slide.classList.add('active');
+        // Pixabay API 응답 구조에 맞게 URL과 태그 가져오기
+        const imageUrl = image.webformatURL || image.largeImageURL;
+        const altText = image.tags || '슬라이드 이미지';
+
+        if (!imageUrl) {
+            console.warn('Image URL does not exist for image:', image);
+            return;
         }
-        slidesContainer.appendChild(slide);
-        slides.push(slide);
+
+        const slide = createSlide(imageUrl, altText);
+        if (slide) {
+            if (index === 0) {
+                slide.classList.add('active');
+            }
+            slidesContainer.appendChild(slide);
+            slides.push(slide);
+        }
     });
+
+    if (slides.length === 0) {
+        slidesContainer.innerHTML = '<p>Unable to load images.</p>';
+        return;
+    }
 
     // 슬라이드 요소가 추가된 후 슬라이더 기능 초기화
     startSlideShow();
+    console.log('Slider initialized successfully.');
 }
 
 // 슬라이드 쇼 시작 함수
@@ -87,16 +114,20 @@ let slideInterval;
 function startSlideShow() {
     if (slides.length > 0) {
         slideInterval = setInterval(nextSlide, 5000); // 5초마다 슬라이드 전환
+        console.log('Slide show started.');
     } else {
-        console.warn('슬라이드가 존재하지 않습니다. 슬라이더 기능이 비활성화됩니다.');
+        console.warn('No slides available. Slide show not started.');
     }
 }
 
 // 다음 슬라이드로 전환하는 함수
 function nextSlide() {
+    if (slides.length === 0) return;
+
     slides[currentSlide].classList.remove('active');
     currentSlide = (currentSlide + 1) % slides.length;
     slides[currentSlide].classList.add('active');
+    console.log(`Current slide index: ${currentSlide}`);
 }
 
 // 초기화 실행
