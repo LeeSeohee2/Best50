@@ -70,24 +70,28 @@ a {
 
 /* 햄버거 버튼 스타일 */
 .navbar .hamburger {
-  display: none;
+  display: flex;
   flex-direction: column;
   cursor: pointer;
   z-index: 200;
+  padding: 8px;
+  background-color: #fff; /* 배경색을 흰색으로 설정 */
+  border-radius: 5px; /* 버튼에 라운드 처리 */
 }
 
 .navbar .hamburger span {
-  height: 3px;
-  width: 25px;
-  background: #fff;
-  margin-bottom: 4px;
-  transition: background 0.3s;
+  height: 4px;
+  width: 30px;
+  background: #333; /* 햄버거 버튼 선 색상 */
+  margin-bottom: 5px;
+  transition: all 0.3s ease; /* 부드러운 전환 효과 */
 }
 
 .navbar.scrolled .hamburger span {
-  background: #333;
+  background: #333; /* 햄버거 버튼 선 색상 */
 }
 
+/* 햄버거 버튼 클릭 시 애니메이션 */
 .navbar .hamburger.active span:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
 }
