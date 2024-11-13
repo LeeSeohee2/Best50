@@ -5,6 +5,35 @@
 const slides = document.querySelectorAll('.slide');
 let currentSlide = 0;
 
+// Netlify Functions의 프록시된 API 호출 및 캐싱
+async function fetchImages(query) {
+    const cachedData = localStorage.getItem('cachedImages');
+    const cacheTimestamp = localStorage.getItem('cacheTimestamp');
+    const now = Date.now();
+
+    // 하루(24시간 * 60분 * 60초 * 1000밀리초)
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    if (cachedData && cacheTimestamp && (now - cacheTimestamp < oneDay)) {
+        // 캐시된 데이터가 있고, 하루가 지나지 않았다면 캐시 사용
+        console.log('캐시된 이미지를 사용합니다.');
+        return JSON.parse(cachedData);
+    } else {
+        // 새로운 데이터를 가져와서 캐시에 저장
+        const response = await fetch(`/.netlify/functions/fetchImages?q=안경&per_page=5`);
+        if (!response.ok) throw new Error("Failed to fetch images");
+        const data = await response.json();
+        const images = data.hits;
+
+        // 캐시에 데이터와 현재 시간을 저장
+        localStorage.setItem('cachedImages', JSON.stringify(images));
+        localStorage.setItem('cacheTimestamp', now.toString());
+
+        console.log('새로운 이미지를 가져와 캐시에 저장했습니다.');
+        return images;
+    }
+}
+
 // 슬라이드가 존재할 때만 슬라이더 초기화
 if (slides.length > 0) {
     const slideInterval = setInterval(nextSlide, 5000); // 5초마다 슬라이드 전환
