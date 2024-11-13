@@ -1,6 +1,6 @@
 [build]
   functions = "netlify/functions"
-  publish = "public" # 또는 실제 배포 폴더 경로
+
 
 [[redirects]]
   from = "/*"
