@@ -34,12 +34,15 @@ async function fetchImages(query) {
             const data = await response.json();
             const images = data.hits;
 
+            // "눈"이라는 단어가 포함된 이미지를 필터링
+            const filteredImages = images.filter(image => !image.tags.includes('눈'));
+
             // 캐시에 데이터와 현재 시간을 저장
-            localStorage.setItem('cachedImages', JSON.stringify(images));
+            localStorage.setItem('cachedImages', JSON.stringify(filteredImages));
             localStorage.setItem('cacheTimestamp', now.toString());
 
             console.log('Fetched new images and cached them.');
-            return images;
+            return filteredImages;
         } catch (error) {
             console.error('Failed to fetch images:', error);
             return [];
@@ -69,7 +72,7 @@ function createSlide(imageUrl, altText) {
 // 슬라이더 초기화 함수
 async function initSlider() {
     console.log('Initializing slider...');
-    const images = await fetchImages('안경');
+    const images = await fetchImages('안경'); // "눈"을 제외한 이미지를 요청
 
     console.log('Fetched images:', images);
 
