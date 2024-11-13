@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+// netlify/functions/fetchImages.js
 
 exports.handler = async (event, context) => {
     const { q, per_page } = event.queryStringParameters;
