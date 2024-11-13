@@ -27,7 +27,7 @@ async function fetchImages(query) {
         return JSON.parse(cachedData);
     } else {
         try {
-            const url = /.netlify/functions/fetchImages?q=${encodeURIComponent(query)}&per_page=5;
+            const url = `/.netlify/functions/fetchImages?q=${encodeURIComponent(query)}&per_page=5`;
             console.log('Fetching from URL:', url);
             const response = await fetch(url);
             if (!response.ok) throw new Error("Failed to fetch images");
@@ -127,7 +127,7 @@ function nextSlide() {
     slides[currentSlide].classList.remove('active');
     currentSlide = (currentSlide + 1) % slides.length;
     slides[currentSlide].classList.add('active');
-    console.log(Current slide index: ${currentSlide});
+    console.log(`Current slide index: ${currentSlide}`);
 }
 
 // 초기화 실행
