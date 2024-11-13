@@ -137,6 +137,13 @@ a {
   font-size: 18px;
 }
 
+/* 이미지 크기를 화면에 맞게 확대 */
+.slider img {
+  width: 100%;
+  height: 100vh; /* 화면 전체 높이에 맞추기 */
+  object-fit: cover; /* 비율 유지하며 꽉 차게 이미지 맞추기 */
+}
+
 /* 콘텐츠 섹션 스타일 */
 .content {
   padding: 100px 50px;
