@@ -1,3 +1,5 @@
+// script.js
+
 // =============================
 // 슬라이더 기능 구현
 // =============================
@@ -32,13 +34,19 @@ async function fetchImages(query) {
             const response = await fetch(url);
             if (!response.ok) throw new Error("Failed to fetch images");
             const data = await response.json();
-            const images = data.hits;
+            let images = data.hits;
+
+            // 클라이언트 측에서도 '눈oreye' 키워드를 포함하지 않는 이미지로 필터링
+            images = images.filter(image => {
+                const tags = image.tags.toLowerCase();
+                return !tags.includes('눈','eye');
+            });
 
             // 캐시에 데이터와 현재 시간을 저장
             localStorage.setItem('cachedImages', JSON.stringify(images));
             localStorage.setItem('cacheTimestamp', now.toString());
 
-            console.log('Fetched new images and cached them.');
+            console.log('Fetched new images, filtered them, and cached the result.');
             return images;
         } catch (error) {
             console.error('Failed to fetch images:', error);
