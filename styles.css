@@ -75,14 +75,14 @@ a {
   cursor: pointer;
   z-index: 200;
   padding: 8px;
-  background-color: #fff;
+  background-color: transparent;
   border-radius: 5px;
 }
 
 .navbar .hamburger span {
   height: 4px;
   width: 30px;
-  background: transparent;
+  background: #333;
   margin-bottom: 5px;
   transition: all 0.3s ease;
 }
