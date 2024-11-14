@@ -1,5 +1,7 @@
 // netlify/functions/fetchImages.js
 
+const fetch = require('node-fetch');
+
 exports.handler = async (event, context) => {
     const { q, per_page } = event.queryStringParameters;
 
@@ -13,7 +15,7 @@ exports.handler = async (event, context) => {
         };
     }
 
-    const url = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${encodeURIComponent(q)}&image_type=photo&per_page=${per_page || 5}`;
+    const url = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${encodeURIComponent(q)}&image_type=photo&per_page=${per_page || 5}&safesearch=true`;
 
     try {
         const response = await fetch(url);
@@ -21,9 +23,18 @@ exports.handler = async (event, context) => {
             throw new Error(`Pixabay API 요청 실패: ${response.statusText}`);
         }
         const data = await response.json();
+        let images = data.hits;
+
+        // '눈' 또는 'eye' 키워드를 포함하지 않는 이미지로 필터링
+        images = images.filter(image => {
+            if (!image.tags) return true; // 태그가 없으면 포함
+            const tags = image.tags.toLowerCase();
+            return !tags.includes('눈') && !tags.includes('eye');
+        });
+
         return {
             statusCode: 200,
-            body: JSON.stringify(data),
+            body: JSON.stringify({ hits: images }),
         };
     } catch (error) {
         console.error('Error fetching images:', error);
