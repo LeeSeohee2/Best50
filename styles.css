@@ -70,13 +70,10 @@ a {
 
 /* 햄버거 버튼 스타일 */
 .navbar .hamburger {
-  display: none; /* 기본적으로는 보이지 않게 설정 */
+  display: none;
   flex-direction: column;
   cursor: pointer;
   z-index: 200;
-  padding: 8px;
-  background-color: transparent;
-  border-radius: 5px;
 }
 
 .navbar .hamburger span {
