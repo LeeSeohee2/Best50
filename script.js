@@ -1,5 +1,3 @@
-// script.js
-
 // =============================
 // 슬라이더 기능 구현
 // =============================
@@ -34,19 +32,13 @@ async function fetchImages(query) {
             const response = await fetch(url);
             if (!response.ok) throw new Error("Failed to fetch images");
             const data = await response.json();
-            let images = data.hits;
-
-            // '눈' 또는 'eye' 키워드를 포함하지 않는 이미지로 필터링
-            images = images.filter(image => {
-                const tags = image.tags.toLowerCase();
-                return !tags.includes('눈') && !tags.includes('eye');
-            });
+            const images = data.hits;
 
             // 캐시에 데이터와 현재 시간을 저장
             localStorage.setItem('cachedImages', JSON.stringify(images));
             localStorage.setItem('cacheTimestamp', now.toString());
 
-            console.log('Fetched new images, filtered them, and cached the result.');
+            console.log('Fetched new images and cached them.');
             return images;
         } catch (error) {
             console.error('Failed to fetch images:', error);
@@ -82,7 +74,7 @@ async function initSlider() {
     console.log('Fetched images:', images);
 
     if (images.length === 0) {
-        slidesContainer.innerHTML = '<p>이미지를 불러올 수 없습니다.</p>';
+        slidesContainer.innerHTML = '<p>Unable to load images.</p>';
         return;
     }
 
@@ -108,7 +100,7 @@ async function initSlider() {
     });
 
     if (slides.length === 0) {
-        slidesContainer.innerHTML = '<p>이미지를 불러올 수 없습니다.</p>';
+        slidesContainer.innerHTML = '<p>Unable to load images.</p>';
         return;
     }
 
