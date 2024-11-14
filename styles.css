@@ -70,18 +70,21 @@ a {
 
 /* 햄버거 버튼 스타일 */
 .navbar .hamburger {
-  display: none;
+  display: none; /* 기본적으로는 보이지 않게 설정 */
   flex-direction: column;
   cursor: pointer;
   z-index: 200;
+  padding: 8px;
+  background-color: transparent; /* 배경색 제거 */
+  border: none; /* 테두리 제거 */
 }
 
 .navbar .hamburger span {
-  height: 3px;
-  width: 25px;
-  background: #fff;
-  margin-bottom: 4px;
-  transition: background 0.3s;
+  height: 4px;
+  width: 30px;
+  background: #333;
+  margin-bottom: 5px;
+  transition: all 0.3s ease;
 }
 
 /* 모바일 화면에서 햄버거 버튼 보이게 설정 */
@@ -253,71 +256,6 @@ a {
     color: #333;
 }
 
-.event-carousel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-}
-
-.event-item {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.event-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.event-item img {
-    width: 100%;
-    height: auto;
-    max-height: 400px;
-    object-fit: cover;
-}
-
-.event-details {
-    padding: 20px;
-    text-align: center;
-}
-
-.event-details h3 {
-    font-size: 2em;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.event-details p {
-    font-size: 1.2em;
-    color: #777;
-    margin-bottom: 15px;
-}
-
-.event-button {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: #e60023;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    font-size: 1em;
-}
-
-.event-button:hover {
-    background-color: #c7001a;
-}
-
 /* 푸터 스타일 */
 .footer {
   background-color: #111;
@@ -325,110 +263,29 @@ a {
   padding: 50px 0;
 }
 
-.footer-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 50px;
+/* 모바일에서 햄버거 버튼 표시 */
+.navbar .hamburger {
+    display: flex;
 }
 
-.footer-left,
-.footer-middle,
-.footer-right {
-  flex: 1;
-  min-width: 250px;
-  margin-bottom: 30px;
+/* 모바일에서 네비게이션 바 숨기기 */
+.navbar .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    text-align: center;
+    z-index: 100;
 }
 
-.footer h3,
-.footer h4 {
-  margin-bottom: 20px;
-  font-size: 20px;
-}
-
-.footer p,
-.footer ul,
-.footer a {
-  color: #ccc;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.footer ul {
-  list-style: none;
-  padding: 0;
-}
-
-.footer ul li {
-  margin-bottom: 10px;
-}
-
-.footer ul li a {
-  text-decoration: none;
-  color: #ccc;
-  transition: color 0.3s;
-}
-
-.footer ul li a:hover {
-  color: #fff;
-}
-
-.social-icons {
-  margin-top: 20px;
-}
-
-.social-icons a {
-  display: inline-block;
-  margin-right: 10px;
-  color: #ccc;
-  font-size: 20px;
-  transition: color 0.3s;
-}
-
-.social-icons a:hover {
-  color: #fff;
-}
-
-.footer-bottom {
-  background-color: #000;
-  text-align: center;
-  padding: 20px 0;
-}
-
-.footer-bottom p {
-  margin: 0;
-  color: #777;
-  font-size: 12px;
-}
-
-/* 문의 사항 섹션 스타일 */
-.contact-info {
-  margin-top: 10px;
-  font-size: 18px;
-  text-align: center;
-}
-
-.contact-info p {
-  margin-bottom: 15px;
-}
-
-.contact-info a {
-  color: #0e0d0d;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.contact-info a:hover {
-  color: #de350e;
-}
-
-.contact-info i {
-  font-size: 24px;
-  margin-right: 8px;
-  margin-top: 17px;
+.navbar .nav-links.active {
+    display: flex;
 }
 
 /* 반응형 디자인: 모바일 화면에 맞게 폰트 크기 및 이미지 조정 */
@@ -475,116 +332,10 @@ a {
         font-size: 16px;
     }
 
-    /* 푸터 텍스트 크기 */
-    .footer h3,
-    .footer h4 {
-        font-size: 18px;
-    }
-
-    .footer p,
-    .footer ul li a {
-        font-size: 13px;
-    }
-
-    .footer-bottom p {
-        font-size: 10px;
-    }
-
-    /* 모바일에서 햄버거 버튼 표시 */
-    .navbar .hamburger {
-        display: flex;
-    }
-
-    /* 모바일에서 네비게이션 바 숨기기 */
-    .navbar .nav-links {
+    /* 모바일에서 푸터 메뉴 숨기기 */
+    .footer-middle {
         display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        text-align: center;
-        z-index: 100;
     }
-
-    .navbar .nav-links.active {
-        display: flex;
-    }
-
-    .navbar .nav-links li {
-        margin: 20px 0;
-    }
-
-    /* 모바일에서 콘텐츠 섹션 패딩 조정 */
-    .content {
-        padding: 50px 20px;
-    }
-
-    /* 이달의 행사 섹션 모바일 스타일 */
-    .events {
-        padding: 50px 20px;
-        text-align: left;
-        align-items: stretch;
-    }
-
-    .events h2 {
-        font-size: 24px;
-        margin-bottom: 30px;
-        text-align: left;
-    }
-
-    .event-carousel {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .event-item {
-        width: 100%;
-        max-width: 100%;
-        margin-bottom: 20px;
-    }
-
-    .event-item img {
-        height: auto;
-        max-height: 300px;
-    }
-
-    .event-details h3 {
-        font-size: 1.5em;
-    }
-
-    .event-details p {
-        font-size: 1em;
-    }
-
-    .event-button {
-        padding: 10px 20px;
-        font-size: 0.9em;
-    }
-}
-
-/* 데스크톱 메뉴 항상 표시 */
-@media (min-width: 769px) {
-  .navbar .nav-links {
-    display: flex !important;
-  }
-
-  .navbar .hamburger {
-    display: none; /* 데스크탑 화면에서는 햄버거 버튼 숨김 */
-  }
-}
-
-/* 모바일에서 푸터 메뉴 숨기기 */
-@media (max-width: 768px) {
-  .footer-middle {
-    display: none;
-  }
 }
 
 /* 모바일에서 텍스트 왼쪽 정렬 */
